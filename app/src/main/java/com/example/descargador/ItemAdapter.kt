@@ -3,10 +3,12 @@ package com.example.descargador
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.google.android.material.button.MaterialButton
 
 class ItemAdapter(
     private val alAbrir: (Item) -> Unit,
@@ -48,6 +50,25 @@ class ItemAdapter(
             Estado.ERROR -> "${item.etiquetaCalidad()} · Error: ${item.error ?: "desconocido"}"
         }
 
+        // Miniatura
+        if (!item.thumbnailUrl.isNullOrBlank()) {
+            h.thumb.load(item.thumbnailUrl) {
+                placeholder(R.drawable.ic_video_placeholder)
+                error(R.drawable.ic_video_placeholder)
+                crossfade(true)
+            }
+        } else {
+            h.thumb.setImageResource(R.drawable.ic_video_placeholder)
+        }
+
+        // Duración
+        if (!item.duracion.isNullOrBlank()) {
+            h.duracion.text = item.duracion
+            h.duracion.visibility = View.VISIBLE
+        } else {
+            h.duracion.visibility = View.GONE
+        }
+
         h.barra.visibility = if (item.estado == Estado.DESCARGANDO) View.VISIBLE else View.GONE
         h.barra.progress = item.progreso
 
@@ -64,11 +85,13 @@ class ItemAdapter(
     }
 
     class VH(v: View) : RecyclerView.ViewHolder(v) {
+        val thumb: ImageView = v.findViewById(R.id.ivItemThumb)
+        val duracion: TextView = v.findViewById(R.id.tvItemDuracion)
         val titulo: TextView = v.findViewById(R.id.tvItemTitulo)
         val detalle: TextView = v.findViewById(R.id.tvItemDetalle)
         val barra: ProgressBar = v.findViewById(R.id.pbItem)
-        val btnAbrir: Button = v.findViewById(R.id.btnAbrir)
-        val btnCompartir: Button = v.findViewById(R.id.btnCompartir)
-        val btnBorrar: Button = v.findViewById(R.id.btnBorrar)
+        val btnAbrir: MaterialButton = v.findViewById(R.id.btnAbrir)
+        val btnCompartir: MaterialButton = v.findViewById(R.id.btnCompartir)
+        val btnBorrar: MaterialButton = v.findViewById(R.id.btnBorrar)
     }
 }

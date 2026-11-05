@@ -39,6 +39,7 @@ dependencies {
     implementation("io.github.junkfood02.youtubedl-android:library:0.18.1")
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation(libs.coil)
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)

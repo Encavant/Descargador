@@ -18,7 +18,9 @@ class Item(
     var progreso: Int = 0,
     var uri: String? = null,
     var mime: String? = null,
-    var error: String? = null
+    var error: String? = null,
+    var thumbnailUrl: String? = null,
+    var duracion: String? = null
 ) {
     fun etiquetaCalidad(): String = when (calidad) {
         "mejor" -> "Mejor calidad"
@@ -86,6 +88,8 @@ object Descargas {
             o.put("uri", it.uri ?: "")
             o.put("mime", it.mime ?: "")
             o.put("error", it.error ?: "")
+            o.put("thumbnailUrl", it.thumbnailUrl ?: "")
+            o.put("duracion", it.duracion ?: "")
             arr.put(o)
         }
         prefs?.edit()?.putString("lista", arr.toString())?.apply()
@@ -114,7 +118,9 @@ object Descargas {
                         progreso = if (estado == Estado.COMPLETADA) 100 else 0,
                         uri = o.optString("uri", "").ifEmpty { null },
                         mime = o.optString("mime", "").ifEmpty { null },
-                        error = error
+                        error = error,
+                        thumbnailUrl = o.optString("thumbnailUrl", "").ifEmpty { null },
+                        duracion = o.optString("duracion", "").ifEmpty { null }
                     )
                 )
             }
